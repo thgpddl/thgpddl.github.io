@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>ubuntu使用tips既常见问题 | Hexo</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="ubuntu使用tips既常见问题 | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="[TOC] [TOC] 1、摘要opencv提供了许多图像处理的算法或者api，如通过将BGR转为HSV颜色模型，然后通过设置相关阈值可以提取设定颜色区域，比如opencv-python掩膜操作(进阶篇之颜色追踪)_python opencv hsv掩膜-CSDN博客](https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_40243750&#x2F;article&#x2F;details&#x2F;113823531))中，通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="opencv使用createTrackbar实时调节参数进行可视化">
+<meta property="og:url" content="http://example.com/2024/02/26/opencv-createTrackbar/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] [TOC] 1、摘要opencv提供了许多图像处理的算法或者api，如通过将BGR转为HSV颜色模型，然后通过设置相关阈值可以提取设定颜色区域，比如opencv-python掩膜操作(进阶篇之颜色追踪)_python opencv hsv掩膜-CSDN博客](https:&#x2F;&#x2F;blog.csdn.net&#x2F;qq_40243750&#x2F;article&#x2F;details&#x2F;113823531))中，通">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/02/26/opencv-createTrackbar/image-20240226143451720.png">
+<meta property="article:published_time" content="2024-02-26T06:16:31.000Z">
+<meta property="article:modified_time" content="2024-02-26T06:35:26.322Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/02/26/opencv-createTrackbar/image-20240226143451720.png">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>John Doe</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+            <a title="github"
+               href="https://github.com/thgpddl"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="csdn"
+               href="https://blog.csdn.net/qq_40243750"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-csdn"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:ishyj@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(4)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具使用">
+            
+            工具使用
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="奇淫技巧">
+            
+            奇淫技巧
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="opencv">
+            
+            opencv
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        <a 
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="4">
+<input type="hidden" id="yelog_site_word_count" value="3.1k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All opencv "
+           href="/2024/02/26/opencv-createTrackbar/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="opencv使用createTrackbar实时调节参数进行可视化">opencv使用createTrackbar实时调节参数进行可视化</span>
+            <span class="post-date" title="2024-02-26 14:16:31">2024/02/26</span>
+        </a>
+        
+        
+        <a  class="All 工具使用 "
+           href="/2024/02/23/nvidia-use-tips/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="nvidia使用记录">nvidia使用记录</span>
+            <span class="post-date" title="2024-02-23 09:35:52">2024/02/23</span>
+        </a>
+        
+        
+        <a  class="All 工具使用 "
+           href="/2024/02/23/ubuntu-use-tips/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ubuntu使用tips既常见问题">ubuntu使用tips既常见问题</span>
+            <span class="post-date" title="2024-02-23 08:26:48">2024/02/23</span>
+        </a>
+        
+        
+        <a  class="All 奇淫技巧 "
+           href="/2024/02/21/github_hexo/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="使用github+hexo搭建静态博客">使用github+hexo搭建静态博客</span>
+            <span class="post-date" title="2024-02-21 17:21:45">2024/02/21</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-ubuntu-use-tips" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">ubuntu使用tips既常见问题</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="工具使用">工具使用</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-02-26 13:52:36'>2024-02-23 08:26</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:656</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+        <span class="top-comment" title="跳转至评论区">
+            <a href="#comments">
+                Comment:<span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </a>
+        </span>
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81ubuntu%E4%BD%BF%E7%94%A8tips"><span class="toc-text">1、ubuntu使用tips</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%BF%AB%E6%8D%B7%E4%BF%AE%E6%94%B9ip"><span class="toc-text">1.1 快捷修改ip</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8bug%E7%AF%87"><span class="toc-text">2、系统使用bug篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%85%B3%E6%9C%BA%E6%98%BE%E7%A4%BAa-stop-job-is-running-for-session-3-of-user-ubuntu-1-min-30-s"><span class="toc-text">2.1 关机显示a stop job is running for session 3 of user ubuntu (1 min 30 s)</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81ubuntu%E4%BD%BF%E7%94%A8tips"><span class="toc-text">1、ubuntu使用tips</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-1-%E5%BF%AB%E6%8D%B7%E4%BF%AE%E6%94%B9ip"><span class="toc-text">1.1 快捷修改ip</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81%E7%B3%BB%E7%BB%9F%E4%BD%BF%E7%94%A8bug%E7%AF%87"><span class="toc-text">2、系统使用bug篇</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1-%E5%85%B3%E6%9C%BA%E6%98%BE%E7%A4%BAa-stop-job-is-running-for-session-3-of-user-ubuntu-1-min-30-s"><span class="toc-text">2.1 关机显示a stop job is running for session 3 of user ubuntu (1 min 30 s)</span></a></li></ol></li></ol></div></p>
+<h1 id="1、ubuntu使用tips"><a href="#1、ubuntu使用tips" class="headerlink" title="1、ubuntu使用tips"></a>1、ubuntu使用tips</h1><h2 id="1-1-快捷修改ip"><a href="#1-1-快捷修改ip" class="headerlink" title="1.1 快捷修改ip"></a>1.1 快捷修改ip</h2><p>很多时候需要修改ip，使修改配置文件可是实现，如果频率太高就很繁琐了。实际上可以通过sh脚本接收用户输入的ip参数， 然后脚本中自动修改配置文件且生效，并且在~&#x2F;.bashrc中添加这个脚本并通过<code>alisa</code>命令定义chnet为脚本命令，即可在任意地方通过<code>chnet 192.168.1.114</code>修改你的ip为192.168.1.114。</p>
+<p>首先写一个chnet.sh脚本（这个会接收chnet.sh 192.168.1.114的ip，并将电脑最后两个修改为1.114。注意这里仅修改最后两个值，如果想直接修改为完整ip需要修改代码）：</p>
+<pre><code class="shell">#!/bin/bash
+
+# 从命令行参数中获取 IP 地址
+ip_address=&quot;$1&quot;
+
+# 使用正则表达式从 IP 地址中提取子网号
+if [[ $ip_address =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+    new_subnet=&quot;$&#123;BASH_REMATCH[3]&#125;&quot;
+else
+    echo &quot;需要输入指定的ip&quot;
+    exit 1
+fi
+
+# 仅替换第三个网段
+sudo sed -i &quot;s/addresses: \[192\.168\..*\./addresses: \[192.168.$new_subnet./;&quot; /etc/netplan/01-network-manager-all.yaml
+sudo sed -i &quot;s/gateway4: 192\.168\..*\./gateway4: 192.168.$new_subnet./;&quot; /etc/netplan/01-network-manager-all.yaml
+
+sudo netplan apply
+echo &quot;ip config success!&quot;
+</code></pre>
+<p>现在将chnet.sh移动到<code>/usr/local/bin/</code>：<code>mv chnet.sh /usr/local/bin/chnet.sh</code>，因为<code>/usr/local/bin</code>在我的电脑中是添		加进环境变量的，所以位于<code>/usr/local/bin/</code>的<code>chnet.sh</code>可以在任意位置通过<code>chnet.sh 192.168.1.114</code>命令调用。</p>
+<p>当然我们也可以给<code>chnet.sh</code>起一个新的名字显得更高端。打开<code>vim ~/.bashrc</code>中添加<code>alias chnet=&quot;/usr/local/bin/chnet.sh&quot;</code>，然后刷新<code>source ~/.bashrc</code>，现在你可以在随时通过<code>chnet 192.168.1.114</code>修改你的ip为<code>x.x.1.114</code>了</p>
+<img src="/2024/02/23/ubuntu-use-tips/0887309002149e944d95b879cafed594.png" class="" title="img">
+
+<h1 id="2、系统使用bug篇"><a href="#2、系统使用bug篇" class="headerlink" title="2、系统使用bug篇"></a>2、系统使用bug篇</h1><h2 id="2-1-关机显示a-stop-job-is-running-for-session-3-of-user-ubuntu-1-min-30-s"><a href="#2-1-关机显示a-stop-job-is-running-for-session-3-of-user-ubuntu-1-min-30-s" class="headerlink" title="2.1 关机显示a stop job is running for session 3 of user ubuntu (1 min 30 s)"></a>2.1 关机显示<code>a stop job is running for session 3 of user ubuntu (1 min 30 s)</code></h2><p>当尝试reboot或者shutdown时，电脑一直无法关机，按<code>ESC</code>键会看到上面的显示，需要等待90s，显然是不可接受的。具体原理分析见：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/256481066">关机时间太长的调查和解决的方法 | Linux 中国 - 知乎 (zhihu.com)</a>。解决办法简单，系统中预定义了timeout&#x3D;90s，我们可以显式设定一个更小的值如10s，关机时等待10s让让相关程序结束，timeout后强制关机或重启：</p>
+<pre><code class="yaml"># 打开配置文件
+sudo nano /etc/systemd/system.conf
+
+#找到“#DefaultTimeoutStopSec=90s”，去掉#使生效，并修改90s为10s
+
+# 重新加载配置文件
+sudo systemctl daemon-reload
+</code></pre>
+<p>现在关机如果再有程序不“礼貌结束”，系统也只会等待10s了。</p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 ishyj@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+    <div id="comments"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script type="text/javascript">
+    $.getScript('/js/gitalk.js', function () {
+        var gitalk = new Gitalk({
+            clientID: 'feb1d3e8da252a070cc7',
+            clientSecret: 'a0c910988191602d9a3612227eabac41f45652ed',
+            repo: 'thgpddl.github.io',
+            owner: 'thgpddl',
+            admin: ['thgpddl'],
+            id: decodeURI(location.pathname),
+            distractionFreeMode: 'true',
+            language: 'zh-CN',
+            perPage: parseInt('100',10)
+        })
+        gitalk.render('comments')
+    })
+</script>
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2024-2024 ishyj
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    #post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+
+</html>
