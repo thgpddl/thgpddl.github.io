@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>TensorRT入门（C++） | Hexo</title>
+  <meta name="keywords" content="">
+  <meta name="description" content="TensorRT入门（C++） | Hexo">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="description" content="[TOC] 1、核心API[C++ API](API Reference :: NVIDIA Deep Learning TensorRT Documentation) TensorRT C++ API允许开发者导入、校准、生成和部署网络。网络可以直接从ONNX导入，或者用C++实例化每一个层构建网络结构，然后将参数和权重（储存在文件中）装载到结构中。 核心API主要分为以下一个部分，这些API都">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorRT入门（C++）">
+<meta property="og:url" content="http://example.com/2024/02/27/tensorrt-plain/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC] 1、核心API[C++ API](API Reference :: NVIDIA Deep Learning TensorRT Documentation) TensorRT C++ API允许开发者导入、校准、生成和部署网络。网络可以直接从ONNX导入，或者用C++实例化每一个层构建网络结构，然后将参数和权重（储存在文件中）装载到结构中。 核心API主要分为以下一个部分，这些API都">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-02-27T14:15:16.000Z">
+<meta property="article:modified_time" content="2024-02-27T16:31:21.807Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="icon" href="/img/avatar.jpg">
+
+<link href="/css/style.css?v=1.1.0" rel="stylesheet">
+
+<link href="/css/hl_theme/github.css?v=1.1.0" rel="stylesheet">
+
+<link href="//cdn.jsdelivr.net/npm/animate.css@4.1.0/animate.min.css" rel="stylesheet">
+
+<script src="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="/js/titleTip.js?v=1.1.0" ></script>
+
+<script src="//cdn.jsdelivr.net/npm/highlightjs@9.16.2/highlight.pack.min.js"></script>
+<script>
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/jquery.cookie@1.4.1/jquery.cookie.min.js" ></script>
+
+<script src="/js/iconfont.js?v=1.1.0" ></script>
+
+<meta name="generator" content="Hexo 7.1.1"></head>
+<div style="display: none">
+  <input class="theme_disqus_on" value="false">
+  <input class="theme_preload_comment" value="">
+  <input class="theme_blog_path" value="">
+  <input id="theme_shortcut" value="true" />
+  <input id="theme_highlight_on" value="true" />
+  <input id="theme_code_copy" value="true" />
+</div>
+
+
+
+<body>
+<aside class="nav">
+    <div class="nav-left">
+        <a href="/"
+   class="avatar_target">
+    <img class="avatar"
+         src="/img/avatar.jpg"/>
+</a>
+<div class="author">
+    <span>John Doe</span>
+</div>
+
+<div class="icon">
+    
+        
+    
+        
+            <a title="github"
+               href="https://github.com/thgpddl"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-github"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            <a title="csdn"
+               href="https://blog.csdn.net/qq_40243750"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-csdn"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+            <a title="email"
+               href="mailto:ishyj@qq.com"
+               target="_blank">
+                
+                    <svg class="iconfont-svg" aria-hidden="true">
+                        <use xlink:href="#icon-email"></use>
+                    </svg>
+                
+            </a>
+        
+    
+        
+    
+        
+    
+        
+    
+</div>
+
+
+
+
+
+<ul>
+    <li>
+        <div class="all active" data-rel="All">All
+            
+                <small>(5)</small>
+            
+        </div>
+    </li>
+    
+        
+            
+                
+    <li>
+        <div data-rel="工具使用">
+            
+            工具使用
+            <small>(2)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="奇淫技巧">
+            
+            奇淫技巧
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="opencv">
+            
+            opencv
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+        
+            
+                
+    <li>
+        <div data-rel="TensorRT">
+            
+            TensorRT
+            <small>(1)</small>
+        </div>
+        
+    </li>
+
+            
+        
+    
+</ul>
+<div class="left-bottom">
+    <div class="menus">
+        
+            
+            
+            
+    </div>
+    <div>
+        
+        <a 
+                                           class="friends">Friends</a>
+        
+    </div>
+</div>
+<input type="hidden" id="yelog_site_posts_number" value="5">
+<input type="hidden" id="yelog_site_word_count" value="5k">
+<div style="display: none">
+    <span id="busuanzi_value_site_uv"></span>
+    <span id="busuanzi_value_site_pv"></span>
+</div>
+
+    </div>
+    <div class="nav-right">
+        <div class="friends-area">
+    <div class="friends-title">
+        Links
+        <i class="iconfont icon-left"></i>
+    </div>
+    <div class="friends-content">
+        <ul>
+            
+        </ul>
+    </div>
+</div>
+        <div class="title-list">
+    <div class="right-top">
+        <div id="default-panel">
+            <i class="iconfont icon-search" data-title="搜索 快捷键 i"></i>
+            <div class="right-title">All</div>
+            <i class="iconfont icon-file-tree" data-title="切换到大纲视图 快捷键 w"></i>
+        </div>
+        <div id="search-panel">
+            <i class="iconfont icon-left" data-title="返回"></i>
+            <input id="local-search-input" autocomplete="off"/>
+            <label class="border-line" for="input"></label>
+            <i class="iconfont icon-case-sensitive" data-title="大小写敏感"></i>
+            <i class="iconfont icon-tag" data-title="标签"></i>
+        </div>
+        <div id="outline-panel" style="display: none">
+            <div class="right-title">大纲</div>
+            <i class="iconfont icon-list" data-title="切换到文章列表"></i>
+        </div>
+    </div>
+
+    <div class="tags-list">
+    <input id="tag-search" />
+    <div class="tag-wrapper">
+        
+    </div>
+
+</div>
+
+    
+    <div id="local-search-result">
+
+    </div>
+    
+    <nav id="title-list-nav">
+        
+        
+        <a  class="All TensorRT "
+           href="/2024/02/27/tensorrt-plain/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="TensorRT入门（C++）">TensorRT入门（C++）</span>
+            <span class="post-date" title="2024-02-27 22:15:16">2024/02/27</span>
+        </a>
+        
+        
+        <a  class="All opencv "
+           href="/2024/02/26/opencv-createTrackbar/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="opencv使用createTrackbar实时调节参数进行可视化">opencv使用createTrackbar实时调节参数进行可视化</span>
+            <span class="post-date" title="2024-02-26 14:16:31">2024/02/26</span>
+        </a>
+        
+        
+        <a  class="All 工具使用 "
+           href="/2024/02/23/nvidia-use-tips/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="nvidia使用记录">nvidia使用记录</span>
+            <span class="post-date" title="2024-02-23 09:35:52">2024/02/23</span>
+        </a>
+        
+        
+        <a  class="All 工具使用 "
+           href="/2024/02/23/ubuntu-use-tips/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="ubuntu使用tips既常见问题">ubuntu使用tips既常见问题</span>
+            <span class="post-date" title="2024-02-23 08:26:48">2024/02/23</span>
+        </a>
+        
+        
+        <a  class="All 奇淫技巧 "
+           href="/2024/02/21/github_hexo/"
+           data-tag=""
+           data-author="" >
+            <span class="post-title" title="使用github+hexo搭建静态博客">使用github+hexo搭建静态博客</span>
+            <span class="post-date" title="2024-02-21 17:21:45">2024/02/21</span>
+        </a>
+        
+        <div id="no-item-tips">
+
+        </div>
+    </nav>
+    <div id="outline-list">
+    </div>
+</div>
+
+    </div>
+    <div class="hide-list">
+        <div class="semicircle" data-title="切换全屏 快捷键 s">
+            <div class="brackets first"><</div>
+            <div class="brackets">&gt;</div>
+        </div>
+    </div>
+</aside>
+<div id="post">
+    <div class="pjax">
+        <article id="post-tensorrt-plain" class="article article-type-post" itemscope itemprop="blogPost">
+    
+        <h1 class="article-title">TensorRT入门（C++）</h1>
+    
+    <div class="article-meta">
+        
+        
+        
+        <span class="book">
+            <i class="iconfont icon-category"></i>
+            
+            
+            <a  data-rel="TensorRT">TensorRT</a>
+            
+        </span>
+        
+        
+    </div>
+    <div class="article-meta">
+        
+            Created At : <time class="date" title='Updated At: 2024-02-28 00:31:21'>2024-02-27 22:15</time>
+        
+    </div>
+    <div class="article-meta">
+        
+        <span>Count:1.9k</span>
+        
+        
+        <span id="busuanzi_container_page_pv">
+            Views 👀 :<span id="busuanzi_value_page_pv">
+                <span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </span>
+        </span>
+        
+        
+        <span class="top-comment" title="跳转至评论区">
+            <a href="#comments">
+                Comment:<span class="count-comment">
+                    <span class="spinner">
+                      <div class="cube1"></div>
+                      <div class="cube2"></div>
+                    </span>
+                </span>
+            </a>
+        </span>
+        
+    </div>
+    
+    <div class="toc-ref">
+    
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E6%A0%B8%E5%BF%83API"><span class="toc-text">1、核心API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81TensorRT%E6%B5%81%E7%A8%8B%E5%AE%9E%E4%BE%8B"><span class="toc-text">2、TensorRT流程实例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%E3%80%81%E6%9E%84%E5%BB%BAengine%E6%96%87%E4%BB%B6"><span class="toc-text">2.1、构建engine文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1%E3%80%81%E5%88%9B%E5%BB%BA%E6%9E%84%E5%BB%BA%E5%99%A8"><span class="toc-text">2.1.1、创建构建器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2%E3%80%81%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BD%91%E7%BB%9C%E5%AE%9A%E4%B9%89"><span class="toc-text">2.1.2、用构建器创建一个网络定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3%E3%80%81%E4%BD%BF%E7%94%A8ONNX-Parser%E5%90%91%E7%BD%91%E7%BB%9C%E5%AE%9A%E4%B9%89%E4%B8%AD%E8%BF%81%E7%A7%BB%E7%BB%93%E6%9E%84%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">2.1.3、使用ONNX Parser向网络定义中迁移结构和参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-4%E3%80%81%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AAengine%E6%96%87%E4%BB%B6"><span class="toc-text">2.1.4、构建一个engine文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-5%E3%80%81%E4%BF%9D%E5%AD%98%E5%BA%8F%E5%88%97%E5%8C%96engine%E6%96%87%E4%BB%B6"><span class="toc-text">2.1.5、保存序列化engine文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%E3%80%81%E4%BD%BF%E7%94%A8engine%E6%89%A7%E8%A1%8C%E6%8E%A8%E7%90%86"><span class="toc-text">2.2、使用engine执行推理</span></a></li></ol></li></ol>
+    
+<style>
+    .left-col .switch-btn,
+    .left-col .switch-area {
+        display: none;
+    }
+    .toc-level-3 i,
+    .toc-level-3 ol {
+        display: none !important;
+    }
+</style>
+</div>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><div class='inner-toc'><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#1%E3%80%81%E6%A0%B8%E5%BF%83API"><span class="toc-text">1、核心API</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2%E3%80%81TensorRT%E6%B5%81%E7%A8%8B%E5%AE%9E%E4%BE%8B"><span class="toc-text">2、TensorRT流程实例</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2-1%E3%80%81%E6%9E%84%E5%BB%BAengine%E6%96%87%E4%BB%B6"><span class="toc-text">2.1、构建engine文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-1%E3%80%81%E5%88%9B%E5%BB%BA%E6%9E%84%E5%BB%BA%E5%99%A8"><span class="toc-text">2.1.1、创建构建器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-2%E3%80%81%E7%94%A8%E6%9E%84%E5%BB%BA%E5%99%A8%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E7%BD%91%E7%BB%9C%E5%AE%9A%E4%B9%89"><span class="toc-text">2.1.2、用构建器创建一个网络定义</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-3%E3%80%81%E4%BD%BF%E7%94%A8ONNX-Parser%E5%90%91%E7%BD%91%E7%BB%9C%E5%AE%9A%E4%B9%89%E4%B8%AD%E8%BF%81%E7%A7%BB%E7%BB%93%E6%9E%84%E5%92%8C%E5%8F%82%E6%95%B0"><span class="toc-text">2.1.3、使用ONNX Parser向网络定义中迁移结构和参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-4%E3%80%81%E6%9E%84%E5%BB%BA%E4%B8%80%E4%B8%AAengine%E6%96%87%E4%BB%B6"><span class="toc-text">2.1.4、构建一个engine文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-5%E3%80%81%E4%BF%9D%E5%AD%98%E5%BA%8F%E5%88%97%E5%8C%96engine%E6%96%87%E4%BB%B6"><span class="toc-text">2.1.5、保存序列化engine文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-2%E3%80%81%E4%BD%BF%E7%94%A8engine%E6%89%A7%E8%A1%8C%E6%8E%A8%E7%90%86"><span class="toc-text">2.2、使用engine执行推理</span></a></li></ol></li></ol></div></p>
+<h1 id="1、核心API"><a href="#1、核心API" class="headerlink" title="1、核心API"></a>1、核心API</h1><p>[C++ API](<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/index.html#api">API Reference :: NVIDIA Deep Learning TensorRT Documentation</a>)</p>
+<p>TensorRT C++ API允许开发者导入、校准、生成和部署网络。网络可以直接从ONNX导入，或者用C++实例化每一个层构建网络结构，然后将参数和权重（储存在文件中）装载到结构中。</p>
+<p>核心API主要分为以下一个部分，这些API都被包含在<code>NvInfer.h</code>头文件中：</p>
+<ul>
+<li>构建器API（Builder API）：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder.html">TensorRT: nvinfer1::IBuilder Class Reference (nvidia.com)</a></li>
+<li>执行API（Execution API）：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_execution_context.html">TensorRT: nvinfer1::IExecutionContext Class Reference (nvidia.com)</a></li>
+<li>网络定义API（Network Definition API）：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_network_definition.html">TensorRT: nvinfer1::INetworkDefinition Class Reference (nvidia.com)</a></li>
+<li>ONNX分析器API（ONNX parser API）：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/c_api/namespacenvonnxparser.html">https://docs.nvidia.com/deeplearning/tensorrt/c_api/namespacenvonnxparser.html</a></li>
+<li>插件API（Plugin API）：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_plugin.html">https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_plugin.html</a></li>
+</ul>
+<p>（关于C++ API及示例代码等更多信息，参考<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html">Developer Guide :: NVIDIA Deep Learning TensorRT Documentation</a> ）</p>
+<h1 id="2、TensorRT流程实例"><a href="#2、TensorRT流程实例" class="headerlink" title="2、TensorRT流程实例"></a>2、TensorRT流程实例</h1><p>现在我们有一个onnx模型文件（pytorch、tensorflow等都提供了转onnx的工具），如何使用TensorRT进行推理加速呢？首先我们需要知道该过程大体上分为两步：</p>
+<ul>
+<li>构建engine文件。TensorRT（TRT）能进行推理加速的原因之一时将模型针对具体的硬件进行了优化构建的，所以TRT首先需要将ONNX转为可在GPU上高效执行的格式，并且在此过程中进行优化。这个过程的最终结构就是得到一个engine格式的序列化文件。但是这个转换过程比较耗时，我们不希望每次启动都需要长时间等待它转换，所以我们可以将转换的结果以二进制方式保存到本地文件，通常是以<code>.engine</code>结尾的文件。</li>
+<li>使用engine进行推理。启动时直接从本地文件读取二进制的engine文件，再反序列化就可以进行相关的推理任务。</li>
+</ul>
+<p>下面将分别讲解两个部分，内容基本来自<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#c_topics">The C++ API</a></p>
+<h2 id="2-1、构建engine文件"><a href="#2-1、构建engine文件" class="headerlink" title="2.1、构建engine文件"></a>2.1、构建engine文件</h2><p>C++ API在头文件<code>NvInfer.h</code>中，并且在<code>nvinfer1</code>命名空间中，所以当使用C++的TensorRT时，有如下开头：</p>
+<pre><code class="cpp">#include &quot;NvInfer.h&quot;
+
+using namespace nvinfer1;
+</code></pre>
+<p>TensorRT的API中，接口类是以<code>I</code>为前缀的，比如<code>ILogger</code>，<code>IBuilder</code>等等。</p>
+<p><font color=red>如果在 TensorRT 首次调用 CUDA 之前没有 CUDA  context，则会自动创建 CUDA context。一般情况下，最好在首次调用 TensorRT 之前手动创建和配置 CUDA context。</font></p>
+<h3 id="2-1-1、创建构建器"><a href="#2-1-1、创建构建器" class="headerlink" title="2.1.1、创建构建器"></a>2.1.1、创建构建器</h3><p>构建器顾名思义用来构建的，比如从构建器构建网络定义</p>
+<p>我们需要创建一个构建器，但在这之前必须要实例化一个<code>ILogger</code>接口（通过继承<code>ILogger</code>并实现其中的<code>log</code>函数），比如下面的示例会捕获所有警告信息，但是忽略informational messages（系统状态、操作进展或其他非错误性事件的信息）。然后在实例化构建器时将<code>log</code>对象传入。即创建构建器必须要有<code>ILogger</code>对象：</p>
+<pre><code class="cpp">class Logger:pubilc ILogger&#123;
+    void log(Severity severity, const char*msg) noexcept override&#123;
+        // 阻止info-level级别信息
+        if(severity&lt;=Severity::kWARNING)&#123;
+            std::cout&lt;&lt;msg&lt;&lt;std::endl;
+        &#125;
+    &#125;
+&#125; logger;
+
+// 创建构建器
+IBuilder* builder = createInferBuilder(logger);
+</code></pre>
+<p>上面的代码中，<code>severity</code>指示日志消息的严重程度，<code>msg</code>是日志消息的内容，<code>noexcept</code>表示该函数不抛出异常，<code>override</code>表明是对同名函数的重写。</p>
+<h3 id="2-1-2、用构建器创建一个网络定义"><a href="#2-1-2、用构建器创建一个网络定义" class="headerlink" title="2.1.2、用构建器创建一个网络定义"></a>2.1.2、用构建器创建一个网络定义</h3><p>创建构建器后，第一步是创建网络定义，如：</p>
+<pre><code class="cpp">uint32_t flag = 1U&lt;&lt;static_cast&lt;uint32_t&gt;(NetworkDefinitionCreateionFlag::KEXPLICIT_BATCH);
+
+INetworkDefinition* network =builder-&gt;createNetworkV2(flag);
+</code></pre>
+<p>或者：</p>
+<pre><code class="cpp">INetworkDefinition* network =builder-&gt;createNetworkV2(1U &lt;&lt;
+        static_cast&lt;int&gt;(NetworkDefinitionCreationFlag::kEXPLICIT_BATCH));
+</code></pre>
+<p><font color=red>如果要使用ONNX parser必须要使用kEXPLICIT_BATCH标志，详情见：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#explicit-implicit-batch">6.9. Explicit Versus Implicit Batch</a></font></p>
+<p><font color=red>在RTX中，有两个阶段：1）build engine：将储存了层名和权重的wts文件转换为engine文件。该过程需要IBuilder和INetwork；2）inference：直接将engine读取到IRuntime中，进行推理。</font></p>
+<p>此时的网络定义只是一个空壳，没有结构也没有权重参数。</p>
+<h3 id="2-1-3、使用ONNX-Parser向网络定义中迁移结构和参数"><a href="#2-1-3、使用ONNX-Parser向网络定义中迁移结构和参数" class="headerlink" title="2.1.3、使用ONNX Parser向网络定义中迁移结构和参数"></a>2.1.3、使用ONNX Parser向网络定义中迁移结构和参数</h3><p>ONNX是一种中间件表示协议，规定了网络的结构且储存了参数。现在可以用TensorRT的ONNX Parser接口将ONNX文件中的结构和参数填充到上文定义的空客网络network中。</p>
+<p>首先ONNX parser的API位于<code>NvOnnxParser.h</code>头文件中，parser位于<code>nvonnxparser</code>命名空间：</p>
+<pre><code class="cpp">#include &quot;NvOnnxParser.h&quot;
+
+using namespace nvonnxparser;
+</code></pre>
+<p>要使用parser进行填充，首先需要创建一个parser实例：</p>
+<pre><code class="cpp">IParser* parser=createParser(*network,logger);
+</code></pre>
+<p>显然任何需要日志的接口在实例化时都需要ILogger对象。</p>
+<p>现在我们读取ONNX模型文件并且处理出现的任何错误：</p>
+<pre><code class="cpp">parser-&gt;parserFromFile(modelFile, static_cast&lt;int32_t&gt;(ILogger::Serverity::kWARNING));
+
+for(int32_t i=0;i&lt;parser.getNbErrors();++i)&#123;
+    std::cout&lt;&lt;parser-&gt;getError(i)-&gt;desc()&lt;&lt;std::endl;
+&#125;
+</code></pre>
+<p>在这里我们尝试读取本地的ONNX文件，同时定义了需要捕获的错误的等级。函数在读取文件发送的所有小于该等级的错误都会被记录。后续通过getNbErrors和getError获取到错误的详细描述，帮助我们了解模型的读取情况。</p>
+<h3 id="2-1-4、构建一个engine文件"><a href="#2-1-4、构建一个engine文件" class="headerlink" title="2.1.4、构建一个engine文件"></a>2.1.4、构建一个engine文件</h3><p>TensorRT能够有效加速的一个原因是，会根据硬件的具体情况，将ONNX等其他模型进行构建优化适配。但是每一次构建都很耗时，所以构建完毕后通常都是序列化保存到本地文件，文件以<code>.engine</code>为后缀。下一次推理初始化时只需要反序列化加载engine文件就ok了，不需要再进行耗时的优化编译了。</p>
+<p>需要说明的时，engine是TensorRT根据你的硬件针对性的优化，所以本机构建的engine文件只能在本机使用。就算是两台软硬件相同的设备也无法混用（没有具体测试过，但是两台相同GPU的设备测试过确实会报错）。甚至同一个设备两次构建engine也不一定相同。</p>
+<p>在上节中我们读取了ONNX模型文件，现在我们尝试将其构建为设配设备的engine文件。</p>
+<p>首先在构建时，我们需要使用IBuilderConfig设定一些构建优化的细节：</p>
+<pre><code class="cpp">IBuilderCOnfig* config=builder-&gt;createBuilderConfig();
+
+config-&gt;setMemoryPoolLimit(MemoryPoolType::kWORKSPACE, 1U&lt;20);
+</code></pre>
+<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/c_api/classnvinfer1_1_1_i_builder_config.html">IBuilderConfig API</a></p>
+<p>最后就可以构建engine了：</p>
+<pre><code class="cpp">IHostMemory* serializedModel = builder-&gt;buildSerializedNetwork(*network, *config);
+</code></pre>
+<p>由于序列化的engine包含了包含了必需的权重，而parser、network definition、builder config和builder不再需要了，因此可以安全删除：</p>
+<pre><code class="cpp">delete parser;
+delete network;
+delete config;
+delete builder;
+</code></pre>
+<h3 id="2-1-5、保存序列化engine文件"><a href="#2-1-5、保存序列化engine文件" class="headerlink" title="2.1.5、保存序列化engine文件"></a>2.1.5、保存序列化engine文件</h3><p>上节中我们构建了序列化的engine保存在IHostMemory中，构建序列化文件时很耗时，我们并不希望下次启动时还要序列化一次。所以我们可以将engine以文件的形式保存到本地（已经针对设备优化过的用于TensorRT推理，和ONNX文件不同）。</p>
+<p>保存这部分实际上和TensorRT没有什么关系了，就是借助C++的文件操作进行保存：</p>
+<pre><code class="cpp">// Serialize the engine
+IHostMemory* serialized_engine = engine-&gt;serialize();
+assert(serialized_engine != nullptr);
+
+// Save engine to file
+std::ofstream p(&quot;saved.engine&quot;, std::ios::binary);
+if (!p) &#123;
+std::cerr &lt;&lt; &quot;Could not open plan output file&quot; &lt;&lt; std::endl;
+assert(false);
+&#125;
+p.write(reinterpret_cast&lt;const char*&gt;(serialized_engine-&gt;data()), serialized_engine-&gt;size());
+
+delete serializedModel  // 最后安全删除
+</code></pre>
+<p>读取engine文件的代码如下，其中engine和runtime需要在TensorRT推理部分介绍：</p>
+<pre><code class="cpp">std::ifstream file(engine_name, std::ios::binary);
+if (!file.good()) &#123;
+std::cerr &lt;&lt; &quot;read &quot; &lt;&lt; engine_name &lt;&lt; &quot; error!&quot; &lt;&lt; std::endl;
+assert(false);
+&#125;
+size_t size = 0;
+file.seekg(0, file.end);
+size = file.tellg();
+file.seekg(0, file.beg);
+char* serialized_engine = new char[size];
+assert(serialized_engine);
+file.read(serialized_engine, size);
+file.close();
+
+
+IRuntime* runtime = createInferRuntime(logger);
+ICudaEngine* engine = runtime-&gt;deserializeCudaEngine(serialized_engine, size);
+</code></pre>
+<h2 id="2-2、使用engine执行推理"><a href="#2-2、使用engine执行推理" class="headerlink" title="2.2、使用engine执行推理"></a>2.2、使用engine执行推理</h2><p>TODO：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#perform-inference">3.3. Performing Inference</a></p>
+
+      
+       <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 ishyj@qq.com </span>
+    </div>
+</article>
+
+
+
+
+
+    <div id="comments"></div>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+
+<script type="text/javascript">
+    $.getScript('/js/gitalk.js', function () {
+        var gitalk = new Gitalk({
+            clientID: 'feb1d3e8da252a070cc7',
+            clientSecret: 'a0c910988191602d9a3612227eabac41f45652ed',
+            repo: 'thgpddl.github.io',
+            owner: 'thgpddl',
+            admin: ['thgpddl'],
+            id: decodeURI(location.pathname),
+            distractionFreeMode: 'true',
+            language: 'zh-CN',
+            perPage: parseInt('100',10)
+        })
+        gitalk.render('comments')
+    })
+</script>
+
+
+
+
+    
+
+
+
+
+    </div>
+    <div class="copyright">
+        <p class="footer-entry">
+    ©2024-2024 ishyj
+</p>
+<p class="footer-entry">Built with <a href="https://hexo.io/" target="_blank">Hexo</a> and <a href="https://github.com/yelog/hexo-theme-3-hexo" target="_blank">3-hexo</a> theme</p>
+
+    </div>
+    <div class="full-toc">
+        <button class="full" data-title="切换全屏 快捷键 s"><span class="min "></span></button>
+<a class="" id="rocket" ></a>
+
+    </div>
+</div>
+
+</body>
+<script src="/js/jquery.pjax.js?v=1.1.0" ></script>
+
+<script src="/js/script.js?v=1.1.0" ></script>
+<script>
+    var img_resize = 'default';
+    function initArticle() {
+        /*渲染对应的表格样式*/
+        
+            $("#post .pjax table").addClass("green_title");
+        
+
+        /*渲染打赏样式*/
+        
+
+        /*高亮代码块行号*/
+        
+
+        /*访问数量*/
+        
+        $.getScript("//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js");
+        
+
+        /*代码高亮，行号对齐*/
+        $('.pre-numbering').css('line-height',$('.has-numbering').css('line-height'));
+
+        
+        
+    }
+
+    /*打赏页面隐藏与展示*/
+    
+
+</script>
+
+<!--加入行号的高亮代码块样式-->
+
+<!--自定义样式设置-->
+<style>
+    
+    
+    .nav {
+        width: 542px;
+    }
+    .nav.fullscreen {
+        margin-left: -542px;
+    }
+    .nav-left {
+        width: 120px;
+    }
+    
+    
+    @media screen and (max-width: 1468px) {
+        .nav {
+            width: 492px;
+        }
+        .nav.fullscreen {
+            margin-left: -492px;
+        }
+        .nav-left {
+            width: 100px;
+        }
+    }
+    
+    
+    @media screen and (max-width: 1024px) {
+        .nav {
+            width: 492px;
+            margin-left: -492px
+        }
+        .nav.fullscreen {
+            margin-left: 0;
+        }
+    }
+    
+    @media screen and (max-width: 426px) {
+        .nav {
+            width: 100%;
+        }
+        .nav-left {
+            width: 100%;
+        }
+    }
+    
+    
+    .nav-right .title-list nav a .post-title, .nav-right .title-list #local-search-result a .post-title {
+        color: #383636;
+    }
+    
+    
+    .nav-right .title-list nav a .post-date, .nav-right .title-list #local-search-result a .post-date {
+        color: #5e5e5f;
+    }
+    
+    
+    .nav-right nav a.hover, #local-search-result a.hover{
+        background-color: #e2e0e0;
+    }
+    
+    
+
+    /*列表样式*/
+    
+
+    /* 背景图样式 */
+    
+    
+
+
+    /*引用块样式*/
+    
+
+    /*文章列表背景图*/
+    
+
+    
+    #post .pjax article :not(pre) > code {
+        color: #24292e;
+        font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace;
+        background-color: rgba(27,31,35,.05);
+        border-radius: 3px;
+        font-size: 85%;
+        margin: 0;
+        padding: .2em .4em;
+    }
+    
+</style>
+
+
+
+
+
+
+
+</html>
