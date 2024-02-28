@@ -2,21 +2,23 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>TensorRT入门（C++） | Hexo</title>
+  <title>TensorRT基本流程概览 | Hexo</title>
   <meta name="keywords" content="">
-  <meta name="description" content="TensorRT入门（C++） | Hexo">
+  <meta name="description" content="TensorRT基本流程概览 | Hexo">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="description" content="[TOC] 1、核心API[C++ API](API Reference :: NVIDIA Deep Learning TensorRT Documentation) TensorRT C++ API允许开发者导入、校准、生成和部署网络。网络可以直接从ONNX导入，或者用C++实例化每一个层构建网络结构，然后将参数和权重（储存在文件中）装载到结构中。 核心API主要分为以下一个部分，这些API都">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TensorRT入门（C++）">
+<meta property="og:title" content="TensorRT基本流程概览">
 <meta property="og:url" content="http://example.com/2024/02/27/tensorrt-plain/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="[TOC] 1、核心API[C++ API](API Reference :: NVIDIA Deep Learning TensorRT Documentation) TensorRT C++ API允许开发者导入、校准、生成和部署网络。网络可以直接从ONNX导入，或者用C++实例化每一个层构建网络结构，然后将参数和权重（储存在文件中）装载到结构中。 核心API主要分为以下一个部分，这些API都">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2024/02/27/tensorrt-plain/fff949657417a8e05c29638a6c92f413.png">
 <meta property="article:published_time" content="2024-02-27T14:15:16.000Z">
-<meta property="article:modified_time" content="2024-02-27T16:31:21.807Z">
+<meta property="article:modified_time" content="2024-02-28T08:24:06.326Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2024/02/27/tensorrt-plain/fff949657417a8e05c29638a6c92f413.png">
 
 
 <link rel="icon" href="/img/avatar.jpg">
@@ -224,7 +226,7 @@
     </div>
 </div>
 <input type="hidden" id="yelog_site_posts_number" value="5">
-<input type="hidden" id="yelog_site_word_count" value="5k">
+<input type="hidden" id="yelog_site_word_count" value="5.3k">
 <div style="display: none">
     <span id="busuanzi_value_site_uv"></span>
     <span id="busuanzi_value_site_pv"></span>
@@ -283,7 +285,7 @@
            href="/2024/02/27/tensorrt-plain/"
            data-tag=""
            data-author="" >
-            <span class="post-title" title="TensorRT入门（C++）">TensorRT入门（C++）</span>
+            <span class="post-title" title="TensorRT基本流程概览">TensorRT基本流程概览</span>
             <span class="post-date" title="2024-02-27 22:15:16">2024/02/27</span>
         </a>
         
@@ -343,7 +345,7 @@
     <div class="pjax">
         <article id="post-tensorrt-plain" class="article article-type-post" itemscope itemprop="blogPost">
     
-        <h1 class="article-title">TensorRT入门（C++）</h1>
+        <h1 class="article-title">TensorRT基本流程概览</h1>
     
     <div class="article-meta">
         
@@ -361,12 +363,12 @@
     </div>
     <div class="article-meta">
         
-            Created At : <time class="date" title='Updated At: 2024-02-28 00:31:21'>2024-02-27 22:15</time>
+            Created At : <time class="date" title='Updated At: 2024-02-28 16:24:06'>2024-02-27 22:15</time>
         
     </div>
     <div class="article-meta">
         
-        <span>Count:1.9k</span>
+        <span>Count:2.3k</span>
         
         
         <span id="busuanzi_container_page_pv">
@@ -425,9 +427,11 @@
 </ul>
 <p>（关于C++ API及示例代码等更多信息，参考<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html">Developer Guide :: NVIDIA Deep Learning TensorRT Documentation</a> ）</p>
 <h1 id="2、TensorRT流程实例"><a href="#2、TensorRT流程实例" class="headerlink" title="2、TensorRT流程实例"></a>2、TensorRT流程实例</h1><p>现在我们有一个onnx模型文件（pytorch、tensorflow等都提供了转onnx的工具），如何使用TensorRT进行推理加速呢？首先我们需要知道该过程大体上分为两步：</p>
+<img src="/2024/02/27/tensorrt-plain/fff949657417a8e05c29638a6c92f413.png" class="" title="fff949657417a8e05c29638a6c92f413">
+
 <ul>
-<li>构建engine文件。TensorRT（TRT）能进行推理加速的原因之一时将模型针对具体的硬件进行了优化构建的，所以TRT首先需要将ONNX转为可在GPU上高效执行的格式，并且在此过程中进行优化。这个过程的最终结构就是得到一个engine格式的序列化文件。但是这个转换过程比较耗时，我们不希望每次启动都需要长时间等待它转换，所以我们可以将转换的结果以二进制方式保存到本地文件，通常是以<code>.engine</code>结尾的文件。</li>
-<li>使用engine进行推理。启动时直接从本地文件读取二进制的engine文件，再反序列化就可以进行相关的推理任务。</li>
+<li>构建engine文件（即NEURAL ETWORK到PLAN这部分）。TensorRT（TRT）能进行推理加速的原因之一时将模型针对具体的硬件进行了优化构建的，所以TRT首先需要将ONNX转为可在GPU上高效执行的格式，并且在此过程中进行优化。这个过程的最终结构就是得到一个engine格式的序列化文件。但是这个转换过程比较耗时，我们不希望每次启动都需要长时间等待它转换，所以我们可以将转换的结果以二进制方式保存到本地文件，通常是以<code>.engine</code>结尾的文件。</li>
+<li>使用engine进行推理（即从PLAN到 Validate using TensorRT这部分）。启动时直接从本地文件读取二进制的engine文件，再反序列化就可以进行相关的推理任务。</li>
 </ul>
 <p>下面将分别讲解两个部分，内容基本来自<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#c_topics">The C++ API</a></p>
 <h2 id="2-1、构建engine文件"><a href="#2-1、构建engine文件" class="headerlink" title="2.1、构建engine文件"></a>2.1、构建engine文件</h2><p>C++ API在头文件<code>NvInfer.h</code>中，并且在<code>nvinfer1</code>命名空间中，所以当使用C++的TensorRT时，有如下开头：</p>
@@ -464,7 +468,7 @@ INetworkDefinition* network =builder-&gt;createNetworkV2(flag);
 <p><font color=red>如果要使用ONNX parser必须要使用kEXPLICIT_BATCH标志，详情见：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#explicit-implicit-batch">6.9. Explicit Versus Implicit Batch</a></font></p>
 <p><font color=red>在RTX中，有两个阶段：1）build engine：将储存了层名和权重的wts文件转换为engine文件。该过程需要IBuilder和INetwork；2）inference：直接将engine读取到IRuntime中，进行推理。</font></p>
 <p>此时的网络定义只是一个空壳，没有结构也没有权重参数。</p>
-<h3 id="2-1-3、使用ONNX-Parser向网络定义中迁移结构和参数"><a href="#2-1-3、使用ONNX-Parser向网络定义中迁移结构和参数" class="headerlink" title="2.1.3、使用ONNX Parser向网络定义中迁移结构和参数"></a>2.1.3、使用ONNX Parser向网络定义中迁移结构和参数</h3><p>ONNX是一种中间件表示协议，规定了网络的结构且储存了参数。现在可以用TensorRT的ONNX Parser接口将ONNX文件中的结构和参数填充到上文定义的空客网络network中。</p>
+<h3 id="2-1-3、使用ONNX-Parser向网络定义中迁移结构和参数"><a href="#2-1-3、使用ONNX-Parser向网络定义中迁移结构和参数" class="headerlink" title="2.1.3、使用ONNX Parser向网络定义中迁移结构和参数"></a>2.1.3、使用ONNX Parser向网络定义中迁移结构和参数</h3><p>ONNX是一种中间件表示协议，规定了网络的结构且储存了参数。现在可以用TensorRT的ONNX Parser接口将ONNX文件中的结构和参数填充到上文定义的空壳网络network中。</p>
 <p>首先ONNX parser的API位于<code>NvOnnxParser.h</code>头文件中，parser位于<code>nvonnxparser</code>命名空间：</p>
 <pre><code class="cpp">#include &quot;NvOnnxParser.h&quot;
 
@@ -483,7 +487,7 @@ for(int32_t i=0;i&lt;parser.getNbErrors();++i)&#123;
 </code></pre>
 <p>在这里我们尝试读取本地的ONNX文件，同时定义了需要捕获的错误的等级。函数在读取文件发送的所有小于该等级的错误都会被记录。后续通过getNbErrors和getError获取到错误的详细描述，帮助我们了解模型的读取情况。</p>
 <h3 id="2-1-4、构建一个engine文件"><a href="#2-1-4、构建一个engine文件" class="headerlink" title="2.1.4、构建一个engine文件"></a>2.1.4、构建一个engine文件</h3><p>TensorRT能够有效加速的一个原因是，会根据硬件的具体情况，将ONNX等其他模型进行构建优化适配。但是每一次构建都很耗时，所以构建完毕后通常都是序列化保存到本地文件，文件以<code>.engine</code>为后缀。下一次推理初始化时只需要反序列化加载engine文件就ok了，不需要再进行耗时的优化编译了。</p>
-<p>需要说明的时，engine是TensorRT根据你的硬件针对性的优化，所以本机构建的engine文件只能在本机使用。就算是两台软硬件相同的设备也无法混用（没有具体测试过，但是两台相同GPU的设备测试过确实会报错）。甚至同一个设备两次构建engine也不一定相同。</p>
+<p>需要说明的时，engine是TensorRT根据你的硬件、CUDA及cuDNN针对性的优化，所以本机构建的engine文件只能在本机使用。就算是两台软硬件相同的设备也无法混用（没有具体测试过，但是两台相同GPU的设备测试过确实会报错）。甚至同一个设备两次构建engine也不一定相同。</p>
 <p>在上节中我们读取了ONNX模型文件，现在我们尝试将其构建为设配设备的engine文件。</p>
 <p>首先在构建时，我们需要使用IBuilderConfig设定一些构建优化的细节：</p>
 <pre><code class="cpp">IBuilderCOnfig* config=builder-&gt;createBuilderConfig();
@@ -536,6 +540,23 @@ IRuntime* runtime = createInferRuntime(logger);
 ICudaEngine* engine = runtime-&gt;deserializeCudaEngine(serialized_engine, size);
 </code></pre>
 <h2 id="2-2、使用engine执行推理"><a href="#2-2、使用engine执行推理" class="headerlink" title="2.2、使用engine执行推理"></a>2.2、使用engine执行推理</h2><p>TODO：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/index.html#perform-inference">3.3. Performing Inference</a></p>
+<p>在推理时，我们需要一个运行环境进行相关的控制。所以必须先实例化一个<code>Runtime</code>接口，同样的它也需要一个<code>ILogger</code>。</p>
+<pre><code class="cpp">IRuntime* runtime=createInferRuntime(logger);
+</code></pre>
+<p>通过<code>IRuntime</code>我们可以创建一个ICudaEngine，ICudaEngine有优化后的模型，保存的是网络结构和参数，所以在创建时需要给定engine文件数据加载进数据进行创建：</p>
+<pre><code class="cpp">ICudaEngine* engine=runtime-&gt;deserializeCudaEngine(serialized_engine,size);
+</code></pre>
+<p>在推理时会产生很多中间值，而ICudaEngine只是持有模型数据，不具有管理中间值和运行状态的能力，而这部分的功能是由<code>IExecutionContext</code>的执行上下文实现的：</p>
+<pre><code class="cpp">IExecutionContext *context = engine-&gt;createExecutionContext();
+</code></pre>
+<p>为了高效的数据传递，我们需要给模型的输入输出节点绑定一个buffer，推理时输入直接从绑定的输入buffer读取数据，输出结果也直接给绑定的输出buffer，提高推理效率：</p>
+<pre><code class="cpp">context-&gt;setTensorAddress(INPUT_NAME, inputBuffer);
+context-&gt;SetTensorAddress(OUTPUT_NAME, outputBuffer);
+</code></pre>
+<p>其中INPUT_NAME和OUTPUT_NAME是模型输入和输出节点的名字，即通过名字定位到输入输出节点，然后绑定buffer。</p>
+<p>在推理之前我们需要将输入数据填充到inputBuffer中，然后调用 TensorRT 的 enqueueV3 方法，开始使用 CUDA 流进行推理：：</p>
+<pre><code class="cpp">context-&gt;enqueueV3(stream);
+</code></pre>
 
       
        <hr><span style="font-style: italic;color: gray;"> 转载请注明来源，欢迎对文章中的引用来源进行考证，欢迎指出任何有错误或不够清晰的表达。可以在下面评论区评论，也可以邮件至 ishyj@qq.com </span>
